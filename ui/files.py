@@ -50,3 +50,4 @@ class FileExplorer(QWidget):
                     path.read_text(errors="ignore")
                 )
         self.refresh()
+
