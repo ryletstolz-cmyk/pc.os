@@ -1,6 +1,8 @@
 from PySide6.QtWidgets import QWidget, QPushButton
-from PySide6.QtCore import Qt
 from ui.terminal import Terminal
+from ui.files import FileExplorer
+from ui.system import SystemInfo
+from ui.gamers import GamersIO
 
 class Desktop(QWidget):
     def __init__(self):
@@ -8,10 +10,17 @@ class Desktop(QWidget):
         self.setStyleSheet("background-color: #1e1e1e;")
 
         self.terminal = Terminal()
+        self.files = FileExplorer()
+        self.system = SystemInfo()
+        self.gamers = GamersIO()
 
-        terminal_icon = QPushButton("Terminal", self)
-        terminal_icon.setGeometry(50, 50, 120, 40)
-        terminal_icon.clicked.connect(self.open_terminal)
+        self.icon("Terminal", 50, 50, self.terminal.show)
+        self.icon("Files", 50, 110, self.files.show)
+        self.icon("System", 50, 170, self.system.show)
+        self.icon("gamers.io", 50, 230, self.gamers.show)
 
-    def open_terminal(self):
-        self.terminal.show()
+    def icon(self, text, x, y, action):
+        btn = QPushButton(text, self)
+        btn.setGeometry(x, y, 120, 40)
+        btn.clicked.connect(action)
+
