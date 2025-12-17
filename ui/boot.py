@@ -5,18 +5,17 @@ class BootScreen(QWidget):
     def __init__(self, stack):
         super().__init__()
         self.stack = stack
+        self.setStyleSheet("background:black; color:white;")
 
-        self.setStyleSheet("background-color: black; color: white;")
+        label = QLabel("pcos 1.1\n\nBooting system...")
+        label.setAlignment(Qt.AlignCenter)
+        label.setStyleSheet("font-size:24px;")
 
         layout = QVBoxLayout()
-        label = QLabel("pcos 1.1\n\nInitializing kernel...\nLoading desktop services...")
-        label.setAlignment(Qt.AlignCenter)
-        label.setStyleSheet("font-size: 24px;")
-
         layout.addWidget(label)
         self.setLayout(layout)
 
-        QTimer.singleShot(3000, self.finish_boot)
+        QTimer.singleShot(2500, self.finish)
 
-    def finish_boot(self):
+    def finish(self):
         self.stack.setCurrentIndex(1)
