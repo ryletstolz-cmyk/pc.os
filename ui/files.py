@@ -1,42 +1,36 @@
-from PySide6.QtWidgets import (
-    QWidget, QListWidget, QVBoxLayout, QLabel, QMessageBox
-)
-from pathlib import Path
+from PySide6.QtWidgets import QListWidget, QVBoxLayout, QLabel, QMessageBox
+from ui.window import Window
 from ui.fs import init_fs
 
-class FileExplorer(QWidget):
+class FileExplorer(Window):
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle("pcos Files")
-        self.resize(500, 400)
-
+        super().__init__("pcos Files", 500, 400)
         self.root = init_fs()
         self.current = self.root
 
-        self.path_label = QLabel(str(self.current))
+        self.path = QLabel()
         self.list = QListWidget()
-        self.list.itemDoubleClicked.connect(self.open_item)
+        self.list.itemDoubleClicked.connect(self.open)
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.path_label)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(5, 35, 5, 5)
+        layout.addWidget(self.path)
         layout.addWidget(self.list)
-        self.setLayout(layout)
 
         self.refresh()
 
     def refresh(self):
         self.list.clear()
-        self.path_label.setText(str(self.current))
+        self.path.setText(str(self.current))
 
         if self.current != self.root:
             self.list.addItem("..")
 
-        for item in self.current.iterdir():
-            self.list.addItem(item.name)
+        for p in self.current.iterdir():
+            self.list.addItem(p.name)
 
-    def open_item(self, item):
+    def open(self, item):
         name = item.text()
-
         if name == "..":
             self.current = self.current.parent
         else:
@@ -44,10 +38,7 @@ class FileExplorer(QWidget):
             if path.is_dir():
                 self.current = path
             else:
-                QMessageBox.information(
-                    self,
-                    "File",
-                    path.read_text(errors="ignore")
-                )
+                QMessageBox.information(self, "File", path.read_text(errors="ignore"))
         self.refresh()
+
 
