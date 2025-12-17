@@ -3,7 +3,7 @@ name: Build pcos exe
 on:
   push:
     tags:
-      - 'v*'
+      - 'v1.1*'
 
 jobs:
   build:
