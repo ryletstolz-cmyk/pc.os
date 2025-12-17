@@ -1,23 +1,21 @@
-from PySide6.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLabel
+from ui.games.snake import SnakeGame
+from ui.games.clicker import ClickerGame
 
 class GamersIO(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("gamers.io")
-        self.resize(400, 300)
-
-        self.score = 0
-        self.label = QLabel("Clicker Quest\n\nScore: 0")
-        self.label.setStyleSheet("font-size: 18px;")
-
-        self.button = QPushButton("CLICK ME")
-        self.button.clicked.connect(self.click)
 
         layout = QVBoxLayout()
-        layout.addWidget(self.label)
-        layout.addWidget(self.button)
-        self.setLayout(layout)
+        layout.addWidget(QLabel("Select a Game"))
 
-    def click(self):
-        self.score += 1
-        self.label.setText(f"Clicker Quest\n\nScore: {self.score}")
+        btn1 = QPushButton("Clicker Quest")
+        btn2 = QPushButton("Snake")
+
+        btn1.clicked.connect(lambda: ClickerGame().show())
+        btn2.clicked.connect(lambda: SnakeGame().show())
+
+        layout.addWidget(btn1)
+        layout.addWidget(btn2)
+        self.setLayout(layout)
