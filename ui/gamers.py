@@ -1,21 +1,23 @@
-from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLabel
-from ui.games.snake import SnakeGame
+from PySide6.QtWidgets import QPushButton, QVBoxLayout
+from ui.window import Window
 from ui.games.clicker import ClickerGame
+from ui.games.snake import SnakeGame
+from ui.games.tictactoe import TicTacToe
+from ui.games.number_guess import NumberGuess
 
-class GamersIO(QWidget):
+class GamersIO(Window):
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle("gamers.io")
+        super().__init__("gamers.io", 400, 350)
 
-        layout = QVBoxLayout()
-        layout.addWidget(QLabel("Select a Game"))
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(10, 40, 10, 10)
 
-        btn1 = QPushButton("Clicker Quest")
-        btn2 = QPushButton("Snake")
+        layout.addWidget(self.launch("Clicker Quest", ClickerGame))
+        layout.addWidget(self.launch("Snake", SnakeGame))
+        layout.addWidget(self.launch("Tic Tac Toe", TicTacToe))
+        layout.addWidget(self.launch("Number Guess", NumberGuess))
 
-        btn1.clicked.connect(lambda: ClickerGame().show())
-        btn2.clicked.connect(lambda: SnakeGame().show())
-
-        layout.addWidget(btn1)
-        layout.addWidget(btn2)
-        self.setLayout(layout)
+    def launch(self, name, game):
+        btn = QPushButton(name)
+        btn.clicked.connect(lambda: game().show())
+        return btn
